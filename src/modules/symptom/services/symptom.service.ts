@@ -23,3 +23,4 @@ export class SymptomService {
     return this.repository.listRecent(limit);
   }
 }
+ 
