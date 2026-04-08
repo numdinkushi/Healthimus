@@ -12,10 +12,7 @@ export const SidebarNav = () => {
   return (
     <nav className="flex flex-col gap-1 px-3 py-2">
       {MAIN_NAV.map((item) => {
-        const active =
-          item.href === "/"
-            ? pathname === "/"
-            : pathname === item.href || pathname.startsWith(`${item.href}/`);
+        const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;
         return (
           <Link

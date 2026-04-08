@@ -15,3 +15,9 @@ export const getAnonymousUserId = (): string =>
 
 export const getConvexUrl = (): string | undefined =>
   process.env[ENV_KEYS.convexUrl]?.trim() || undefined;
+
+export const getConvexHttpActionsUrl = (): string | undefined =>
+  process.env[ENV_KEYS.convexHttpActionsUrl]?.trim() || undefined;
+
+export const getConvexSyncSecret = (): string | undefined =>
+  process.env[ENV_KEYS.convexSyncSecret]?.trim() || undefined;

@@ -2,6 +2,7 @@
 
 import { LogOut, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn, signOut } from "next-auth/react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -26,10 +27,13 @@ export const UserMenu = ({ className, variant = "dropdown" }: Props) => {
   const user = useSessionUser();
   const router = useRouter();
 
-  const logout = () => {
+  const logout = async () => {
     clearHealthimusClientStorage();
-    router.refresh();
-    window.location.assign("/");
+    await signOut({ callbackUrl: "/" });
+  };
+
+  const login = async () => {
+    await signIn("google");
   };
 
   if (variant === "inline") {
@@ -51,21 +55,34 @@ export const UserMenu = ({ className, variant = "dropdown" }: Props) => {
             <p className="text-muted-foreground truncate text-xs">
               {user.email}
             </p>
-            <p className="text-muted-foreground mt-0.5 text-[11px] leading-snug">
-              Sign in to sync across devices.
-            </p>
+            {!user.isAuthenticated ? (
+              <p className="text-muted-foreground mt-0.5 text-[11px] leading-snug">
+                Sign in to sync across devices.
+              </p>
+            ) : null}
           </div>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="w-full justify-center gap-2"
-          onClick={logout}
-        >
-          <LogOut className="size-4" />
-          Log out
-        </Button>
+        {user.isAuthenticated ? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full justify-center gap-2"
+            onClick={() => void logout()}
+          >
+            <LogOut className="size-4" />
+            Log out
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            size="sm"
+            className="w-full justify-center gap-2"
+            onClick={() => void login()}
+          >
+            Sign in with Google
+          </Button>
+        )}
       </div>
     );
   }
@@ -101,9 +118,11 @@ export const UserMenu = ({ className, variant = "dropdown" }: Props) => {
           <div className="flex flex-col gap-1">
             <span className="text-sm font-medium">{user.displayName}</span>
             <span className="text-muted-foreground text-xs">{user.email}</span>
-            <span className="text-muted-foreground text-[11px] leading-snug">
-              Sign in with Google to sync your workspace across devices.
-            </span>
+            {!user.isAuthenticated ? (
+              <span className="text-muted-foreground text-[11px] leading-snug">
+                Sign in with Google to sync your workspace across devices.
+              </span>
+            ) : null}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -115,15 +134,27 @@ export const UserMenu = ({ className, variant = "dropdown" }: Props) => {
           </span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="text-destructive focus:text-destructive gap-2"
-          onSelect={() => {
-            logout();
-          }}
-        >
-          <LogOut className="size-4" />
-          Log out
-        </DropdownMenuItem>
+        {user.isAuthenticated ? (
+          <DropdownMenuItem
+            className="text-destructive focus:text-destructive gap-2"
+            onSelect={() => {
+              void logout();
+            }}
+          >
+            <LogOut className="size-4" />
+            Log out
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem
+            className="gap-2"
+            onSelect={() => {
+              void login();
+              router.refresh();
+            }}
+          >
+            Sign in with Google
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

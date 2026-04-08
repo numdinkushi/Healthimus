@@ -34,7 +34,7 @@ export const DoctorBriefView = () => {
               </CardDescription>
             </div>
             <Button asChild variant="outline" className="shrink-0 rounded-xl">
-              <Link href="/chat">
+              <Link href="/dashboard/chat">
                 <MessageSquare className="mr-2 size-4" />
                 Refine with AI
               </Link>

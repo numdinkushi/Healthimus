@@ -42,7 +42,7 @@ export const AppShell = ({
 
   return (
     <div className="flex min-h-svh">
-      <aside className="bg-card/50 border-border hidden w-64 shrink-0 flex-col border-r lg:flex">
+      <aside className="bg-card/50 border-border hidden w-64 shrink-0 flex-col border-r lg:sticky lg:top-0 lg:flex lg:h-svh">
         <div className="flex h-16 items-center gap-2 border-b px-4">
           <BrandMark />
         </div>
@@ -76,10 +76,7 @@ export const AppShell = ({
               </SheetHeader>
               <div className="flex flex-col gap-1 p-2 pb-4">
                 {MAIN_NAV.map((item) => {
-                  const active =
-                    item.href === "/"
-                      ? pathname === "/"
-                      : pathname.startsWith(item.href);
+                  const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
                   const Icon = item.icon;
                   return (
                     <Link

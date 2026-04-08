@@ -6,8 +6,8 @@ import {
 } from "lucide-react";
 
 export const MAIN_NAV = [
-  { href: "/", label: "Overview", icon: Home },
-  { href: "/symptoms", label: "Symptoms", icon: ClipboardList },
-  { href: "/brief", label: "Doctor brief", icon: Stethoscope },
-  { href: "/chat", label: "AI assistant", icon: MessageCircle },
+  { href: "/dashboard", label: "Overview", icon: Home },
+  { href: "/dashboard/symptoms", label: "Symptoms", icon: ClipboardList },
+  { href: "/dashboard/brief", label: "Doctor brief", icon: Stethoscope },
+  { href: "/dashboard/chat", label: "AI assistant", icon: MessageCircle },
 ] as const;
