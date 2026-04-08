@@ -6,6 +6,11 @@ import type {
   SymptomEntry,
 } from "@/lib/types/care";
 
+const DEMO_NOW_ISO = "2026-04-08T11:45:00.000Z";
+const DEMO_NOW_MS = new Date(DEMO_NOW_ISO).getTime();
+const minutesBeforeDemoNow = (minutes: number): string =>
+  new Date(DEMO_NOW_MS - minutes * 60 * 1000).toISOString();
+
 export const DUMMY_RECIPIENTS: CareRecipient[] = [
   {
     id: "rec_mom",
@@ -32,14 +37,14 @@ export const DUMMY_SYMPTOMS: SymptomEntry[] = [
     symptom: "Dizziness after lunch, lasted ~20 minutes",
     severity: "medium",
     note: "Skipped afternoon hydration; BP not measured yet.",
-    loggedAt: new Date(Date.now() - 1000 * 60 * 90).toISOString(),
+    loggedAt: minutesBeforeDemoNow(90),
   },
   {
     id: "sx_2",
     recipientId: "rec_mom",
     symptom: "Mild confusion naming days of the week",
     severity: "low",
-    loggedAt: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(),
+    loggedAt: minutesBeforeDemoNow(60 * 26),
   },
   {
     id: "sx_3",
@@ -47,7 +52,7 @@ export const DUMMY_SYMPTOMS: SymptomEntry[] = [
     symptom: "Joint stiffness in knees, morning",
     severity: "low",
     note: "Improved after warm shower.",
-    loggedAt: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
+    loggedAt: minutesBeforeDemoNow(60 * 8),
   },
 ];
 
@@ -85,7 +90,7 @@ export const DUMMY_ALERTS: CareAlert[] = [
     title: "Afternoon medication pending",
     detail: "Vitamin D not marked taken before 3 PM window.",
     priority: "medium",
-    createdAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+    createdAt: minutesBeforeDemoNow(45),
   },
 ];
 
@@ -93,7 +98,7 @@ export const DUMMY_BRIEFS: Record<string, DoctorBriefDraft> = {
   rec_mom: {
     id: "brief_mom",
     recipientId: "rec_mom",
-    generatedAt: new Date().toISOString(),
+    generatedAt: DEMO_NOW_ISO,
     summaryLines: [
       "78-year-old with hypertension and MCI; lives at home with family support.",
       "Recent focus: post-lunch dizziness and medication adherence.",
@@ -125,7 +130,7 @@ export const DUMMY_BRIEFS: Record<string, DoctorBriefDraft> = {
   rec_dad: {
     id: "brief_dad",
     recipientId: "rec_dad",
-    generatedAt: new Date().toISOString(),
+    generatedAt: DEMO_NOW_ISO,
     summaryLines: [
       "81-year-old with type 2 diabetes and osteoarthritis; ambulatory with cane.",
       "Stable glucose routine; joint stiffness mostly mornings.",

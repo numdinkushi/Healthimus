@@ -12,8 +12,11 @@ type Props = {
 };
 
 export const AppProviders = ({ children, convexUrl }: Props) => {
+  const authBaseUrl =
+    typeof window === "undefined" ? undefined : window.location.origin;
+
   return (
-    <SessionProvider>
+    <SessionProvider baseUrl={authBaseUrl}>
       <ConvexProviderWrapper convexUrl={convexUrl}>
         <ThemeProvider>{children}</ThemeProvider>
       </ConvexProviderWrapper>

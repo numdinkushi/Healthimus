@@ -1,21 +1,13 @@
-import NextAuth from "next-auth";
+import { getServerSession, type NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 
 import { syncUserToConvex } from "@/lib/server/convex-user-sync";
 
-const requireEnv = (key: string): string => {
-  const value = process.env[key];
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${key}`);
-  }
-  return value;
-};
-
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     Google({
-      clientId: requireEnv("GOOGLE_CLIENT_ID"),
-      clientSecret: requireEnv("GOOGLE_CLIENT_SECRET"),
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
   ],
   callbacks: {
@@ -24,13 +16,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return true;
       }
 
-      await syncUserToConvex({
-        provider: account.provider,
-        providerAccountId: account.providerAccountId,
-        email: user.email,
-        name: user.name,
-        image: user.image,
-      });
+      try {
+        await syncUserToConvex({
+          provider: account.provider,
+          providerAccountId: account.providerAccountId,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+        });
+      } catch (error) {
+        console.warn("[Healthimus] Convex sync skipped:", error);
+      }
 
       return true;
     },
@@ -43,6 +39,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: { strategy: "jwt" },
   pages: {
-    signIn: "/chat",
+    signIn: "/",
   },
-});
+};
+
+export const auth = () => getServerSession(authOptions);

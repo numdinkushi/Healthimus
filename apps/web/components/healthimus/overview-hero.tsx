@@ -28,7 +28,7 @@ export const OverviewHero = ({ recipientName, openAlerts }: Props) => {
         </div>
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row md:flex-col">
           <Button asChild className="rounded-xl shadow-sm">
-            <Link href="/symptoms">
+            <Link href="/dashboard/symptoms">
               Log symptom
               <ArrowRight className="size-4" />
             </Link>
@@ -38,7 +38,7 @@ export const OverviewHero = ({ recipientName, openAlerts }: Props) => {
             variant="outline"
             className="healthimus-glass rounded-xl"
           >
-            <Link href="/brief">Open doctor brief</Link>
+            <Link href="/dashboard/brief">Open doctor brief</Link>
           </Button>
         </div>
       </div>
